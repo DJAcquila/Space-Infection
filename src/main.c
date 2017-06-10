@@ -662,7 +662,6 @@ int main(int argc, char *args[])
 	Mix_FreeChunk(alarme);
 	Mix_FreeChunk(enemy2_explosion);
 	Mix_FreeChunk(bul_sound);
-	Mix_FreeMusic(musica);
 
 	/*fputs(pontos,fp);
 	fputs("\n",fp);
