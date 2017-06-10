@@ -6,7 +6,7 @@
   - Move down: "Directional down"
   - Move Left: "Directional left"
   - Move right: "Directional Right"
-  - Shoot: " \ "
+  - Shoot: "LEFT SHIFT"
   - Activate Barrier: "z"
 
 * For the game execution will be necessary some pre-settings
