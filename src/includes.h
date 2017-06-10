@@ -1,0 +1,14 @@
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+#include <SDL/SDL.h>
+#include "SDL/SDL_opengl.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+#include <SDL/SDL_ttf.h>
+#include <SDL/SDL_mixer.h>
+#include "SDL/SDL_image.h"
+#include <sys/time.h>
+#include <math.h>
