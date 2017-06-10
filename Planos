@@ -1,0 +1,10 @@
+Planos futuros:
+1. Corrigir bugs de som
+2. Corrigir textura "Start Game" do menu inicial
+3. Mudar a logica da segunda fase do jogo
+4. Talvez implementar sprites, animações, etc..
+5. Otimizar os eventos:
+  5.1. Quando o jogo finalizar, voltar para a tela inicial
+  5.2. Melhorar comandos
+6. Melhorar a captura de balas e o tempo do sistema
+7. Sistema de Ranqueamento
