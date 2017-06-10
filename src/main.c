@@ -12,7 +12,6 @@ Mix_Chunk *bul_recharge;
 Mix_Chunk *alarme;
 Mix_Chunk *enemy2_explosion;
 
-Mix_Music *musica;
 
 int main(int argc, char *args[])
 
@@ -28,26 +27,25 @@ int main(int argc, char *args[])
 		fputs("PONTOS",fp);
 		fputs("\n",fp);
 	}
-	
-	
+
+
 	char nome[128];
-	
+
 	printf("Informe seu nome:\n");
 	scanf("%[^\n]s",nome);
 	fputs(nome,fp);
-	
+
 	fputs("\t",fp);
 	*/
 	initScreen(argc,args);
-	
+
 
 	struct timeval inicio, final;
 	int tmili;
    	gettimeofday(&inicio, NULL);
-	
+
    	bar_sound = Mix_LoadWAV("Sound/PegarBarreira.ogg");
     bar_explosion = Mix_LoadWAV("Sound/barExplode.ogg");
-   	musica = Mix_LoadMUS("Sound/MusicSecond.wav");
    	bar_cat = Mix_LoadWAV("Sound/BarrierCat.ogg");
    	bul_sound = Mix_LoadWAV("Sound/plasma.ogg");
    	bul_recharge = Mix_LoadWAV("Sound/BalaRecarga.ogg");
@@ -75,7 +73,7 @@ int main(int argc, char *args[])
 		printf("ERRO\n");
 		exit(1);
 	}
-	
+
 	Bullet* bul;
 	bul = (Bullet*)malloc(MAX_BALAS*sizeof(Bullet));
 
@@ -101,7 +99,7 @@ int main(int argc, char *args[])
 		printf("ERRO\n");
 		exit(1);
 	}
-	
+
 	Car* c;
 	c = (Car*)malloc(sizeof(Car));
 
@@ -119,17 +117,17 @@ int main(int argc, char *args[])
 		exit(1);
 	}
 
-	int num_barreiras; 
-	
+	int num_barreiras;
+
 	SDL_Event event;
 
  	num_barreiras = 0; //Quantidade inicial de barreiras
-	
+
 	preSets(b, num_barreiras, bul, ini, rer, c, enem);
-	
+
 	bool esq = false, dir = false;
 	bool baixo = false, cima = false;
-	
+
 	//Teturas
 	unsigned int enemy_texture = 0;
 	enemy_texture = createTexture("Textures/virus.png");
@@ -144,11 +142,6 @@ int main(int argc, char *args[])
 
 	unsigned int textureUp = 0;
 	textureUp = createTexture("Textures/Bullet/bulletUp.png");
-	
-	//Musica de fundo
-
-	Mix_PlayMusic(musica, -1);
-
 
 	//Contadores
 	int contador = 0;
@@ -160,21 +153,21 @@ int main(int argc, char *args[])
 	int contador_inimigos2 = 0;
 	int dead_enemies2 = 0;
 	int marcador = 1;
-	
+
 	c->car_bar = true;
-	
+
 	char pontos[20];
 	while(execut)
 	{
-		
+
 
 		float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
 		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);
 		//Para contar o tempo decorrido
-		
+
 		gettimeofday(&final, NULL);
    		tmili = (int) (1000 * (final.tv_sec - inicio.tv_sec) + (final.tv_usec - inicio.tv_usec) / 1000);
-		
+
 		char text[20];
     	sprintf(text, "Pontos : %2d", points);
     	sprintf(pontos,"%2d",points);
@@ -182,7 +175,7 @@ int main(int argc, char *args[])
     	sprintf(text1,"Barreiras : %2d", num_barreiras);
     	char text2[20];
     	sprintf(text2,"Balas : %2d", num_balas);
-		
+
 		while(SDL_PollEvent(&event))
 		{
 			if(event.type == SDL_QUIT)
@@ -227,7 +220,7 @@ int main(int argc, char *args[])
 					(bul + contador_balas)->tecla_atual = 2;
 					baixo = true;
 				}
-				
+
 				if(event.key.keysym.sym == SDLK_z)
 				{
 					if(num_barreiras > 0)
@@ -255,12 +248,12 @@ int main(int argc, char *args[])
 			{
 				if(event.key.keysym.sym == SDLK_LEFT)
 				{
-					
+
 					esq = false;
 				}
 				else if(event.key.keysym.sym == SDLK_RIGHT)
 				{
-					
+
 					dir = false;
 				}
 				else if(event.key.keysym.sym == SDLK_UP)
@@ -269,36 +262,36 @@ int main(int argc, char *args[])
 				}
 				else if(event.key.keysym.sym == SDLK_DOWN)
 				{
-					
+
 					baixo = false;
 				}
-				
+
 				if(event.key.keysym.sym == SDLK_z)
 				{
 					if(num_barreiras > 0)
 					{
 						num_barreiras--;
 						c->car_bar = true;
-						
+
 					}
 				}
 				if(event.key.keysym.sym == SDLK_LSHIFT)
 				{
-					
+
 					if(num_balas > 0)
 					{
 						(bul+contador_balas)->balaNeles = false;
 
 					}
 				}
-				
-				
+
+
 			}
- 
+
 
 		}
 
-		
+
 		velocidade(bul,contador_balas);
 
 		if((bul+contador_balas)->balaNeles)
@@ -309,11 +302,11 @@ int main(int argc, char *args[])
 				num_balas--;
 
 		}
-		
+
 		LimiteBala(bul+contador_balas);
-		
-		
-		
+
+
+
 		//movimentos persoagem
 		if(esq)
 		{
@@ -331,45 +324,45 @@ int main(int argc, char *args[])
 		{
 			c->carY += 10;
 		}
-		
-		
-		CarColision(c,event,esq,dir,cima,baixo); 
+
+
+		CarColision(c,event,esq,dir,cima,baixo);
 		//movimentos do inimigo (Colisoes, movimento automatico)...
 		EnemyMove(ini);
-		//Nao esta pegando o personagem	
+		//Nao esta pegando o personagem
  		int n;
 		glClear(GL_COLOR_BUFFER_BIT);
 		//Iniciar matriz
 		glPushMatrix();
-		
+
 		//Matriz de desenho
 
 		glOrtho(0, TamJanela_x, TamJanela_y, 0, -1, 1);/*Neste caso eh toda a regiao da janela*/
-		
+
 		ObjectTexture(0, 0, TamJanela_x, TamJanela_y, back_texture);//Texturizacao do plano de fundo
 
 		int pera;
-		
+
 
 		int j;
 		//Colisao das balas com os inimigos
-		
+
 		int k;
 		for(pera = 0; pera < MAX_ENEMY2; pera++)
 		{
 			if((enem + pera)->vivo)
 			{
-				
+
 				if(pera <= contador_inimigos2)
 				{
 					(enem + pera)->y += (enem + pera)->vel;
 
-					ObjectTexture((enem+pera)->x, (enem+pera)->y, (enem+pera)->comp, (enem+pera)->alt, (enem + pera)->texture);	
+					ObjectTexture((enem+pera)->x, (enem+pera)->y, (enem+pera)->comp, (enem+pera)->alt, (enem + pera)->texture);
 				}
-				
+
 			}
 		}
-		
+
 		for(j = 0; j < MAX_BALAS; j++)
 		{
 			for(n = 0; n < cont; n++)
@@ -390,12 +383,12 @@ int main(int argc, char *args[])
 
 				}
 			}
-			
+
 			for(k = 0; k < MAX_ENEMY2; k++)
 				if(j < contador_balas)
 				{
 					if((enem + k)->start)
-					{		
+					{
 						if((enem + k)->vivo)
 						{
 							if(ColisionBulEnemy2 (enem + k, bul + j))
@@ -404,16 +397,16 @@ int main(int argc, char *args[])
 								(enem + k)->hits ++;
 								(bul+j)->vivo = false;
 								(bul+j)->velY = -20*(bul+j)->velY;
-								
+
 								if((enem + k)->hits == 4 )
 								{
 									Mix_PlayChannel(-1, enemy2_explosion, 0);
 									dead_enemies2 ++;
 									(enem + k)->vivo = false;
-									(enem + k)->x = - 1300; 
+									(enem + k)->x = - 1300;
 								}
 							}
-							
+
 							if((enem + k)->hits == 1)
 							{
 								if(k < MAX_ENEMY2)
@@ -431,14 +424,14 @@ int main(int argc, char *args[])
 				}
 		}
 
-		
+
 		//Colisao da barreira com os inimigos
 		for(n = 0; n < (cont); n++)
  		{
  			if( ColisionEnemyCar((ini+n),c))
 			{
 				if(!(c->car_bar)) //se nao esta com a barreira
-				{ 	
+				{
 					execut = false;
 				}
 				else // caso estiver com a barreira...
@@ -452,12 +445,12 @@ int main(int argc, char *args[])
 					c->car_bar = false;
 					(ini+n)->inimigoX = -(ini+n)->inimigoX;
 					(ini+n)->inimigoY = -(ini+n)->inimigoY;
-					
+
 				}
-				
+
 			}
 		}
-		
+
 		if(marcador == 1)
 		{
 			if(dead_enemies == cont) //FIM DO JOGO
@@ -470,7 +463,7 @@ int main(int argc, char *args[])
 				{
 					(enem + pera)->start = true;
 				}
-						
+
 			}
 		}
 		if(dead_enemies2 == MAX_ENEMY2)
@@ -490,9 +483,9 @@ int main(int argc, char *args[])
 
 		renderBitmapString(1, 20, text);
 
-		
 
-	
+
+
 		//So ira aparecer a barreira quando a barreira na estiver ativada na nave
 		switch (contador)
 		{
@@ -506,13 +499,13 @@ int main(int argc, char *args[])
 				else
 					(b+contador)->vivo = false;
 				break;
-				
+
 			case 1:
 				if(tmili*0.001 >= 45 && tmili*0.001 <= 65)
 				{
 					(b+contador)->vivo = true;
 					if((b+contador)->vivo = true)
-						ObjectTexture((b+contador)->barreiraX, (b+contador)->barreiraY, (b+contador)->barreiraCA, (b+contador)->barreiraCA, bar_texture); //Texturizaçao da barreira	
+						ObjectTexture((b+contador)->barreiraX, (b+contador)->barreiraY, (b+contador)->barreiraCA, (b+contador)->barreiraCA, bar_texture); //Texturizaçao da barreira
 				}
 				else
 					(b+contador)->vivo = false;
@@ -522,15 +515,15 @@ int main(int argc, char *args[])
 				{
 					(b+contador)->vivo = true;
 					if((b+contador)->vivo = true)
-						ObjectTexture((b+contador)->barreiraX, (b+contador)->barreiraY, (b+contador)->barreiraCA, (b+contador)->barreiraCA, bar_texture); //Texturizaçao da barreira	
+						ObjectTexture((b+contador)->barreiraX, (b+contador)->barreiraY, (b+contador)->barreiraCA, (b+contador)->barreiraCA, bar_texture); //Texturizaçao da barreira
 				}
 				else
 					(b+contador)->vivo = false;
 				break;
-			
+
 		}
 
-		//Se a barreira estiver "viva", o carro ira colidir com a barreira (pegar a barreira) 
+		//Se a barreira estiver "viva", o carro ira colidir com a barreira (pegar a barreira)
 		if((b+contador)->vivo)
 		{
 			if(contador < MAX_BARREIRAS)
@@ -540,25 +533,25 @@ int main(int argc, char *args[])
 
 					contador++;
 					num_barreiras++;
-				}	
+				}
 		}
-		
+
 
 		//Carro sem textura da barreira
-		if(!(c->car_bar))	
+		if(!(c->car_bar))
 		{
 			ObjectTexture(c->carX, c->carY, c->carComp, c->carAlt, car_texture);//Texturizaçao do carro sem a barreira
 		}
 
-		
+
 		//Carro com textura da barreira
-			
+
 		else
-		{		
+		{
 			ObjectTexture(c->carX, c->carY, c->carComp, c->carAlt, car_bar_texture);//Texturizaçao do carro com a barreira
 		}
-		
-			
+
+
 		switch (contador_recargas)
 		{
 			case 0:
@@ -571,7 +564,7 @@ int main(int argc, char *args[])
 				else
 					(rer+contador_recargas)->vivo =  false;
 				break;
-		
+
 			case 1:
 				if(tmili*0.001 > 30 && tmili*0.001 <= 40)
 				{
@@ -592,10 +585,10 @@ int main(int argc, char *args[])
 				else
 					(rer+contador_recargas)->vivo =  false;
 				break;
-		}	
-			
-		
-		
+		}
+
+
+
 		if((rer+contador_recargas)->vivo)
 			if(contador_recargas < MAX_RECHARGE)
 				if(ColisionRechargeCar (rer + contador_recargas, c))
@@ -603,7 +596,7 @@ int main(int argc, char *args[])
 					Mix_PlayChannel(-1,bul_recharge,0);
 					(rer+contador_recargas)->vivo = false;
 					switch (contador_recargas)
-					{	
+					{
 						case 0:
 							num_balas += -dead_enemies + cont ;
 							break;
@@ -613,23 +606,23 @@ int main(int argc, char *args[])
 						case 2:
 							num_balas += dead_enemies + cont;
 							break;
-						
+
 					}
 					(rer + contador_recargas)->x = TamJanela_x + 50;
 					(rer + contador_recargas)->y = TamJanela_y + 50;
 					contador_recargas++;
 				}
-		
+
 
 		for(n = 0; n < cont ; n++)
 		{
 			if((ini+n)->vivo)
 			{
 				ObjectTexture((ini+n)->inimigoX, (ini+n)->inimigoY, (ini+n)->inimigoCA, (ini+n)->inimigoCA, enemy_texture);//Texturizacao do inimigo
-			}	
+			}
 		}
 
-		
+
 		for(pera = 0; pera < MAX_BALAS; pera++)
 		{
 			if((bul + pera)->vivo)
@@ -640,22 +633,22 @@ int main(int argc, char *args[])
 				}
 			}
 		}
-	
-		
 
-		
-		
-		
+
+
+
+
+
 		//glDisable(GL_TEXTURE_2D);
 
 		//Fechar a matriz
 		glPopMatrix();
 
-		SDL_GL_SwapBuffers();	
+		SDL_GL_SwapBuffers();
 
-		
+
 	}
-	
+
 	free(b);
 	free(c);
 	free(ini);
@@ -685,6 +678,6 @@ int main(int argc, char *args[])
 		*
 	*/
 
-	
-	
+
+
 }
