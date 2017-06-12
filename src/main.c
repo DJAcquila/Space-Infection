@@ -1,8 +1,8 @@
 //gcc -o main main.c -lSDLmain -lSDL -lGL -lSDL_ttf -lSDL_mixer -lSDL_image -lGLU -lGL -lglut -lm
 #include "menu.h"
 
-#define TamJanela_x  1360//600
-#define TamJanela_y 720 //400
+#define TamJanela_x  1360
+#define TamJanela_y 720
 
 Mix_Chunk *bar_sound;
 Mix_Chunk *bar_explosion;
@@ -16,27 +16,29 @@ Mix_Chunk *enemy2_explosion;
 int main(int argc, char *args[])
 
 {
-	//FILE *fp;
+	char nome[124];
+	static int N =  400;
+	printf("Informe seu nome: ");
+	scanf(" %[^\n]s", nome);
 
-	/*fp = fopen("file.txt","a+");
-	if(fp == NULL)
+	FILE *ranking;
+	
+	char conteudo[N];
+	
+	ranking = fopen("ranking.txt","a+");
+	
+	if(ranking == NULL)
 	{
-		fp = fopen("file.txt","w+");
-		fputs("NOME",fp);
-		fputs("\t",fp);
-		fputs("PONTOS",fp);
-		fputs("\n",fp);
+		ranking = fopen("file.txt","a");
+		fputs("NOME",ranking);
+		fputs("\t",ranking);
+		fputs("PONTOS",ranking);
+		fputs("\n",ranking);
 	}
 
-
-	char nome[128];
-
-	printf("Informe seu nome:\n");
-	scanf("%[^\n]s",nome);
-	fputs(nome,fp);
-
-	fputs("\t",fp);
-	*/
+	fputs(nome,ranking);
+	fputs("\t",ranking);
+	fread(&conteudo, sizeof(char), N,ranking);
 	initScreen(argc,args);
 
 
@@ -168,13 +170,15 @@ int main(int argc, char *args[])
 		gettimeofday(&final, NULL);
    		tmili = (int) (1000 * (final.tv_sec - inicio.tv_sec) + (final.tv_usec - inicio.tv_usec) / 1000);
 
-		char text[20];
-    	sprintf(text, "Pontos : %2d", points);
+		char MensagemPontos[20];
+
+    	sprintf(MensagemPontos, "Pontos : %2d", points);
+		/*Transforma os pontos inteiros em string para inserir nos arquivos*/
     	sprintf(pontos,"%2d",points);
-    	char text1[20];
-    	sprintf(text1,"Barreiras : %2d", num_barreiras);
-    	char text2[20];
-    	sprintf(text2,"Balas : %2d", num_balas);
+    	char MensagemBarreiras[20];
+    	sprintf(MensagemBarreiras,"Barreiras : %2d", num_barreiras);
+    	char MensagemBalas[20];
+    	sprintf(MensagemBalas,"Balas : %2d", num_balas);
 
 		while(SDL_PollEvent(&event))
 		{
@@ -477,11 +481,11 @@ int main(int argc, char *args[])
 			renderBitmapString(550, 20, "Barreira sendo usada"); // Identifica se a barreira esta sendo usada
 		}
 
-		renderBitmapString(1238, 20, text1);
+		renderBitmapString(1238, 20, MensagemBarreiras);
 
-		renderBitmapString(1100, 20, text2);
+		renderBitmapString(1100, 20, MensagemBalas);
 
-		renderBitmapString(1, 20, text);
+		renderBitmapString(1, 20, MensagemPontos);
 
 
 
@@ -663,10 +667,11 @@ int main(int argc, char *args[])
 	Mix_FreeChunk(enemy2_explosion);
 	Mix_FreeChunk(bul_sound);
 
-	/*fputs(pontos,fp);
-	fputs("\n",fp);
-	fclose(fp);
-	*/
+	fputs(pontos,ranking);
+	fputs("\n",ranking);
+	
+	fread(&conteudo, sizeof(char), N,ranking);
+	printf("%s",conteudo);
 
 	//Sistema de Ranqueamento aqui
 	/*
