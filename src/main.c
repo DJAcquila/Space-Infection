@@ -189,8 +189,8 @@ int main(int argc, char *args[])
 			//Para Pausar o jogo com BACKSPACE
 			if(event.type == SDL_KEYUP/*Tecal solta*/ && event.key.keysym.sym == SDLK_BACKSPACE)
 			{
-				SDL_FreeSurface(screen_menu);
-				SDL_Flip(screen_menu);
+				/*Esta parte do programa realiza a troca de surfaces, do menu de pause e da tela do jogo*/
+	
 				r_menu = pause_menu();
 				if(r_menu == 1)
 				{
@@ -200,6 +200,7 @@ int main(int argc, char *args[])
 				{
 					execut = true;
 				}
+			
 			}
 
 			if(event.type == SDL_KEYDOWN)

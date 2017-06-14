@@ -481,7 +481,7 @@ void initScreen(int argc, char *args[])
 	SDL_WM_SetCaption("Space Infection",NULL);
 
 
-	screen_menu = SDL_SetVideoMode(TamJanela_x,TamJanela_y,16/*bits por pixel*/,SDL_OPENGL|SDL_GL_DOUBLEBUFFER/*|SDL_FULLSCREEN*/);
+	screen_menu = SDL_SetVideoMode(TamJanela_x,TamJanela_y,32,SDL_OPENGL|SDL_GL_DOUBLEBUFFER/*|SDL_FULLSCREEN*/);
 
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 1024);
 	
