@@ -186,7 +186,7 @@ int main(int argc, char *args[])
 			{
 				execut = false;
 			}
-			//Para fechar a tela com um esc
+			//Para Pausar o jogo com BACKSPACE
 			if(event.type == SDL_KEYUP/*Tecal solta*/ && event.key.keysym.sym == SDLK_BACKSPACE)
 			{
 				SDL_FreeSurface(screen_menu);
