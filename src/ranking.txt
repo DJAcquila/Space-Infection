@@ -1,3 +1,9 @@
-acquila	 1
-acquila	 1
-andre	 1
+acquila	 0
+ç	 0
+a	 1
+acqi	 1
+a	 1
+a	 4
+a	 3
+acquila	114
+a	88

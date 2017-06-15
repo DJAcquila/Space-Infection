@@ -41,7 +41,11 @@ int main(int argc, char *args[])
 	fread(&conteudo, sizeof(char), N,ranking);
 	initScreen(argc,args);
 
+	Recharge* rer; Bullet* bul; Inimigos* ini; Barreira* b; Car* c; Enemy2* enem;
 
+	/*Aloca espaco de memoria para as structures*/
+	alocarMemoria(&c, &bul, &b, &rer, &enem, &ini);
+	
 	struct timeval inicio, final;
 	int tmili;
    	gettimeofday(&inicio, NULL);
@@ -67,63 +71,9 @@ int main(int argc, char *args[])
 	{
 		execut = true;
 	}
-	Recharge* rer;
-	rer = (Recharge*)malloc(MAX_RECHARGE * sizeof(Recharge));
-
-	if(rer == NULL)
-	{
-		printf("ERRO\n");
-		exit(1);
-	}
-
-	Bullet* bul;
-	bul = (Bullet*)malloc(MAX_BALAS*sizeof(Bullet));
-
-	if(bul == NULL)
-	{
-		printf("ERRO\n");
-		exit(1);
-	}
-
-	Inimigos* ini;
-	ini = (Inimigos*)malloc((cont)*sizeof(Inimigos));
-	if(ini == NULL)
-	{
-		printf("ERRO\n");
-		exit(1);
-	}
-
-	Barreira* b;
-	b = (Barreira*)malloc((MAX_BARREIRAS) * sizeof(Barreira));
-
-	if(b == NULL)
-	{
-		printf("ERRO\n");
-		exit(1);
-	}
-
-	Car* c;
-	c = (Car*)malloc(sizeof(Car));
-
-	if(c == NULL)
-	{
-		printf("ERRO\n");
-		exit(1);
-	}
-
-	Enemy2* enem;
-	enem = (Enemy2*)malloc(MAX_ENEMY2 * sizeof(Enemy2));
-	if(enem == NULL)
-	{
-		printf("ERRO\n");
-		exit(1);
-	}
-
-	int num_barreiras;
-
+	
 	SDL_Event event;
 
- 	num_barreiras = 0; //Quantidade inicial de barreiras
 
 	preSets(b, num_barreiras, bul, ini, rer, c, enem);
 
@@ -155,148 +105,43 @@ int main(int argc, char *args[])
 	int contador_inimigos2 = 0;
 	int dead_enemies2 = 0;
 	int marcador = 1;
-
+	int num_barreiras = 0;
+	int j;
+	int k;
+	int l;
 	c->car_bar = true;
 
 	char pontos[20];
 	while(execut)
 	{
-
+		int n;
 
 		float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
 		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);
 		//Para contar o tempo decorrido
 
 		gettimeofday(&final, NULL);
-   		tmili = (int) (1000 * (final.tv_sec - inicio.tv_sec) + (final.tv_usec - inicio.tv_usec) / 1000);
+   		
+		tmili = (int) (1000 * (final.tv_sec - inicio.tv_sec) + (final.tv_usec - inicio.tv_usec) / 1000);
 
 		char MensagemPontos[20];
 
-    	sprintf(MensagemPontos, "Pontos : %2d", points);
+    	
+		sprintf(MensagemPontos, "Pontos : %2d", points);
 		/*Transforma os pontos inteiros em string para inserir nos arquivos*/
-    	sprintf(pontos,"%2d",points);
-    	char MensagemBarreiras[20];
+    	
+		sprintf(pontos,"%2d",points);
+    	
+		char MensagemBarreiras[20];
     	sprintf(MensagemBarreiras,"Barreiras : %2d", num_barreiras);
-    	char MensagemBalas[20];
+    	
+		char MensagemBalas[20];
     	sprintf(MensagemBalas,"Balas : %2d", num_balas);
-
-		while(SDL_PollEvent(&event))
-		{
-			if(event.type == SDL_QUIT)
-			{
-				execut = false;
-			}
-			//Para Pausar o jogo com BACKSPACE
-			if(event.type == SDL_KEYUP/*Tecal solta*/ && event.key.keysym.sym == SDLK_BACKSPACE)
-			{
-				/*Esta parte do programa realiza a troca de surfaces, do menu de pause e da tela do jogo*/
-	
-				r_menu = pause_menu();
-				if(r_menu == 1)
-				{
-					execut = false;
-				}
-				else if(r_menu == 0)
-				{
-					execut = true;
-				}
-			
-			}
-
-			if(event.type == SDL_KEYDOWN)
-			{
-				if(event.key.keysym.sym == SDLK_LEFT)
-				{
-					(bul + contador_balas)->tecla_atual = 3;
-					esq = true;
-				}
-				else if(event.key.keysym.sym == SDLK_RIGHT)
-				{
-					(bul + contador_balas)->tecla_atual = 4;
-					dir = true;
-				}
-				else if(event.key.keysym.sym == SDLK_UP)
-				{
-					(bul + contador_balas)->tecla_atual = 1;
-					cima = true;
-				}
-				else if(event.key.keysym.sym == SDLK_DOWN)
-				{
-					(bul + contador_balas)->tecla_atual = 2;
-					baixo = true;
-				}
-
-				if(event.key.keysym.sym == SDLK_z)
-				{
-					if(num_barreiras > 0)
-						if(!(c->car_bar))
-						{
-							c->car_bar = true;
-							(b + contador)->vivo = false; //quando ativar a barreira no carro, a barreira para ser coletada ficara "morta"
-							Mix_PlayChannel(-1, bar_sound, 0);
-						}
-				}
-				if(event.key.keysym.sym == SDLK_LSHIFT)
-				{
-
-					if(num_balas > 0)
-					{
-						Mix_PlayChannel(-1, bul_sound, 0);
-						(bul + contador_balas)->balaNeles = true;
-						(bul + contador_balas)->vivo = true;
-					}
-				}
-
-			}
-
-			else if(event.type == SDL_KEYUP)
-			{
-				if(event.key.keysym.sym == SDLK_LEFT)
-				{
-
-					esq = false;
-				}
-				else if(event.key.keysym.sym == SDLK_RIGHT)
-				{
-
-					dir = false;
-				}
-				else if(event.key.keysym.sym == SDLK_UP)
-				{
-					cima = false;
-				}
-				else if(event.key.keysym.sym == SDLK_DOWN)
-				{
-
-					baixo = false;
-				}
-
-				if(event.key.keysym.sym == SDLK_z)
-				{
-					if(num_barreiras > 0)
-					{
-						num_barreiras--;
-						c->car_bar = true;
-
-					}
-				}
-				if(event.key.keysym.sym == SDLK_LSHIFT)
-				{
-
-					if(num_balas > 0)
-					{
-						(bul+contador_balas)->balaNeles = false;
-
-					}
-				}
-
-
-			}
-
-
-		}
-
-
+		
+		/*Captura de eventos do teclado*/
+		keyEvents(pause_menu, &execut, &baixo, &cima, &dir, &esq, num_barreiras, num_balas, contador_balas, contador, c, b, bul, bar_sound, bul_sound);
+		
+		/*Define a velocidade das balas*/
 		velocidade(bul,contador_balas);
 
 		if((bul+contador_balas)->balaNeles)
@@ -305,69 +150,44 @@ int main(int argc, char *args[])
 			contador_balas++;
 			if(num_balas > 0)
 				num_balas--;
-
 		}
 
 		LimiteBala(bul+contador_balas);
 
+		CarColision(c,esq,dir,cima,baixo);
 
-
-		//movimentos persoagem
-		if(esq)
-		{
-			c->carX -= 10;
-		}
-		else if (dir)
-		{
-			c->carX += 10;
-		}
-		else if (cima)
-		{
-			c->carY -= 10;
-		}
-		else if (baixo)
-		{
-			c->carY += 10;
-		}
-
-
-		CarColision(c,event,esq,dir,cima,baixo);
 		//movimentos do inimigo (Colisoes, movimento automatico)...
 		EnemyMove(ini);
+		
 		//Nao esta pegando o personagem
- 		int n;
 		glClear(GL_COLOR_BUFFER_BIT);
+		
 		//Iniciar matriz
 		glPushMatrix();
-
+		
 		//Matriz de desenho
-
 		glOrtho(0, TamJanela_x, TamJanela_y, 0, -1, 1);/*Neste caso eh toda a regiao da janela*/
 
 		ObjectTexture(0, 0, TamJanela_x, TamJanela_y, back_texture);//Texturizacao do plano de fundo
-
-		int pera;
-
-
-		int j;
-		//Colisao das balas com os inimigos
-
-		int k;
-		for(pera = 0; pera < MAX_ENEMY2; pera++)
+	
+		/*Colisao das balas com os inimigos
+			Procura em um laço for em qual inimigo a bala se colidiu
+		*/
+		for(l = 0; l < MAX_ENEMY2; l++)
 		{
-			if((enem + pera)->vivo)
+			if((enem + l)->vivo)
 			{
 
-				if(pera <= contador_inimigos2)
+				if(l <= contador_inimigos2)
 				{
-					(enem + pera)->y += (enem + pera)->vel;
+					(enem + l)->y += (enem + l)->vel;
 
-					ObjectTexture((enem+pera)->x, (enem+pera)->y, (enem+pera)->comp, (enem+pera)->alt, (enem + pera)->texture);
+					ObjectTexture((enem+l)->x, (enem+l)->y, (enem+l)->comp, (enem+l)->alt, (enem + l)->texture);
 				}
 
 			}
 		}
-
+		
 		for(j = 0; j < MAX_BALAS; j++)
 		{
 			for(n = 0; n < cont; n++)
@@ -464,9 +284,9 @@ int main(int argc, char *args[])
 				marcador = 0;
 				num_balas += 350;
 				(enem)->vivo = true;
-				for (pera = 0; pera < MAX_ENEMY2; pera++)
+				for (l = 0; l < MAX_ENEMY2; l++)
 				{
-					(enem + pera)->start = true;
+					(enem + l)->start = true;
 				}
 
 			}
@@ -627,22 +447,16 @@ int main(int argc, char *args[])
 			}
 		}
 
-
-		for(pera = 0; pera < MAX_BALAS; pera++)
+		for(l = 0; l < MAX_BALAS; l++)
 		{
-			if((bul + pera)->vivo)
+			if((bul + l)->vivo)
 			{
-				if(pera < contador_balas)
+				if(l < contador_balas)
 				{
-					ObjectTexture((bul+pera)->posX, (bul+pera)->posY, (bul+pera)->Comp, (bul+pera)->Alt, textureUp);
+					ObjectTexture((bul+l)->posX, (bul+l)->posY, (bul+l)->Comp, (bul+l)->Alt, textureUp);
 				}
 			}
 		}
-
-
-
-
-
 
 		//glDisable(GL_TEXTURE_2D);
 

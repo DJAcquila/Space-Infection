@@ -203,7 +203,7 @@ void EnemyMove (Inimigos* ini)
 
 
 
-void CarColision (Car* c, SDL_Event event, bool esq, bool dir, bool cima, bool baixo)
+void CarColision (Car* c, bool esq, bool dir, bool cima, bool baixo)
 {
 //Colisao do personagem com os limites da tela
 	if(c->carX < 0 )
@@ -223,49 +223,6 @@ void CarColision (Car* c, SDL_Event event, bool esq, bool dir, bool cima, bool b
 	{
 		c->carY = TamJanela_y - c->carAlt;
 	}
-	if(c->colisaoX && c->car_bar)
-	{
-		//Para evitar que o carro ultrapasse os limites do inimigo no momento da colisao dreta
-		while(SDL_PollEvent(&event))
-		{	
-
-			if(event.type == SDL_KEYDOWN)
-			{
-				if(event.key.keysym.sym == SDLK_LEFT)
-				{
-					c->carX += 100;
-
-				}
-			
-				else if(event.key.keysym.sym == SDLK_RIGHT)
-				{
-					c->carX -= 100;
-
-				}
-			}
-		}
-	}
-	if(c->colisaoY && c->car_bar)
-	{
-		while(SDL_PollEvent(&event))
-		{	
-
-			if(event.type == SDL_KEYDOWN)
-			{
-				if(event.key.keysym.sym == SDLK_UP)
-				{
-					c->carY += 100;
-
-				}
-				else if(event.key.keysym.sym == SDLK_DOWN)
-				{
-					c->carY -= 100;
-				}
-			}
-		}
-	
-	}
-
 
 }
 /*
@@ -494,6 +451,7 @@ void initScreen(int argc, char *args[])
 	
 	//2d
 	glMatrixMode(GL_PROJECTION);
+	
 	glLoadIdentity();//Para mexer com imagens geometricas
 
 	//3d
@@ -564,4 +522,186 @@ bool LimiteEnemy2(Enemy2* enem)
 		}	
 	}
 	return false;
+}
+void keyEvents(int(*pause_menu)(void),bool* execut, bool* baixo, bool* cima, bool* dir,bool* esq, int num_barreiras, int num_balas, int contador_balas, int contador, Car* c, Barreira* b, Bullet* bul, Mix_Chunk *bar_sound, Mix_Chunk* bul_sound)
+{
+	int r_menu;
+	SDL_Event event;
+	while(SDL_PollEvent(&event))
+		{
+			if(event.type == SDL_QUIT)
+			{
+				*execut = false;
+			}
+			//Para Pausar o jogo com BACKSPACE
+			if(event.type == SDL_KEYUP/*Tecal solta*/ && event.key.keysym.sym == SDLK_BACKSPACE)
+			{
+				/*Esta parte do programa realiza a troca de surfaces, do menu de pause e da tela do jogo*/
+	
+				r_menu = pause_menu();
+				if(r_menu == 1)
+				{
+					*execut = false;
+				}
+				else if(r_menu == 0)
+				{
+					*execut = true;
+				}
+			
+			}
+
+			if(event.type == SDL_KEYDOWN)
+			{
+				if(event.key.keysym.sym == SDLK_LEFT)
+				{	
+					*esq = true;
+				}
+				else if(event.key.keysym.sym == SDLK_RIGHT)
+				{	
+					*dir = true;
+				}
+				else if(event.key.keysym.sym == SDLK_UP)
+				{
+					*cima = true;
+				}
+				else if(event.key.keysym.sym == SDLK_DOWN)
+				{
+					*baixo = true;
+				}
+
+				if(event.key.keysym.sym == SDLK_z)
+				{
+					if(num_barreiras > 0)
+						if(!(c->car_bar))
+						{
+							c->car_bar = true;
+							(b + contador)->vivo = false; //quando ativar a barreira no carro, a barreira para ser coletada ficara "morta"
+							Mix_PlayChannel(-1, bar_sound, 0);
+						}
+				}
+				if(event.key.keysym.sym == SDLK_LSHIFT)
+				{
+
+					if(num_balas > 0)
+					{
+						Mix_PlayChannel(-1, bul_sound, 0);
+						(bul + contador_balas)->balaNeles = true;
+						(bul + contador_balas)->vivo = true;
+					}
+				}
+
+			}
+
+			else if(event.type == SDL_KEYUP)
+			{
+				if(event.key.keysym.sym == SDLK_LEFT)
+				{
+
+					*esq = false;
+				}
+				else if(event.key.keysym.sym == SDLK_RIGHT)
+				{
+
+					*dir = false;
+				}
+				else if(event.key.keysym.sym == SDLK_UP)
+				{
+					*cima = false;
+				}
+				else if(event.key.keysym.sym == SDLK_DOWN)
+				{
+
+					*baixo = false;
+				}
+
+				if(event.key.keysym.sym == SDLK_z)
+				{
+					if(num_barreiras > 0)
+					{
+						num_barreiras--;
+						c->car_bar = true;
+
+					}
+				}
+				if(event.key.keysym.sym == SDLK_LSHIFT)
+				{
+					if(num_balas > 0)
+					{
+						(bul+contador_balas)->balaNeles = false;
+
+					}
+				}
+			}
+
+		}
+		//movimentos persoagem
+		if(*esq)
+		{
+			c->carX -= 10;
+		}
+		else if (*dir)
+		{
+			c->carX += 10;
+		}
+		else if (*cima)
+		{
+			c->carY -= 10;
+		}
+		else if (*baixo)
+		{
+			c->carY += 10;
+		}
+
+
+}
+void alocarMemoria(Car** c, Bullet** bul, Barreira** b, Recharge** rer, Enemy2** enem, Inimigos** ini)
+{
+	
+	*rer = (Recharge*)malloc(MAX_RECHARGE * sizeof(Recharge));
+	if(*rer == NULL)
+	{
+		printf("ERRO\n");
+		exit(1);
+	}
+
+	
+	*bul = (Bullet*)malloc(MAX_BALAS*sizeof(Bullet));
+	if(*bul == NULL)
+	{
+		printf("ERRO\n");
+		exit(1);
+	}
+
+	
+	*ini = (Inimigos*)malloc((cont)*sizeof(Inimigos));
+	if(*ini == NULL)
+	{
+		printf("ERRO\n");
+		exit(1);
+	}
+
+	
+	*b = (Barreira*)malloc((MAX_BARREIRAS) * sizeof(Barreira));
+	if(*b == NULL)
+	{
+		printf("ERRO\n");
+		exit(1);
+	}
+
+	
+	*c = (Car*)malloc(sizeof(Car));
+	if(*c == NULL)
+	{
+		printf("ERRO\n");
+		exit(1);
+	}
+
+	
+	*enem = (Enemy2*)malloc(MAX_ENEMY2 * sizeof(Enemy2));
+	if(*enem == NULL)
+	{
+		printf("ERRO\n");
+		exit(1);
+	}
+
 }

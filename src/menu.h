@@ -488,14 +488,10 @@ int pause_menu ()
 								return i;
 								break;
 						break;
-							
 					}
-					
 			}
-
-
 		}
-
+		
 		glClear(GL_COLOR_BUFFER_BIT);
  		
 		//Iniciar matriz
