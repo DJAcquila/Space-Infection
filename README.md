@@ -18,7 +18,7 @@
     - sudo apt-get install libgl1-mesa-dev
     
 * To compile just use this command
-    - gcc -o main main.c -lSDLmain -lSDL -lGL -lSDL_ttf -lSDL_mixer -lSDL_image -lGLU -lGL -lglut -lm
+    - make
 * And than execute:
     - ./main
     
