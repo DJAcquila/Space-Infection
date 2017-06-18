@@ -1,8 +1,9 @@
 //gcc -o main main.c -lSDLmain -lSDL -lGL -lSDL_ttf -lSDL_mixer -lSDL_image -lGLU -lGL -lglut -lm
 #include "menu.h"
-
-#define TamJanela_x  1360
-#define TamJanela_y 720
+#include "screen.h"
+#include "collisions.h"
+#include "set.h"
+#include "defs.h"
 
 Mix_Chunk *bar_sound;
 Mix_Chunk *bar_explosion;
@@ -16,6 +17,22 @@ Mix_Chunk *enemy2_explosion;
 int main(int argc, char *args[])
 
 {
+	//Contadores
+	int contador = 0;
+	int dead_enemies = 0;
+	int points = 0;
+	int contador_balas = 0;
+	int num_balas = 0;
+	int contador_recargas = 0;
+	int contador_inimigos2 = 0;
+	int dead_enemies2 = 0;
+	int marcador = 1;
+	int num_barreiras = 0;
+	int j;
+	int k;
+	int l;
+	
+
 	char nome[124];
 	static int N =  400;
 	printf("Informe seu nome: ");
@@ -95,22 +112,7 @@ int main(int argc, char *args[])
 	unsigned int textureUp = 0;
 	textureUp = createTexture("Textures/Bullet/bulletUp.png");
 
-	//Contadores
-	int contador = 0;
-	int dead_enemies = 0;
-	int points = 0;
-	int contador_balas = 0;
-	int num_balas = 0;
-	int contador_recargas = 0;
-	int contador_inimigos2 = 0;
-	int dead_enemies2 = 0;
-	int marcador = 1;
-	int num_barreiras = 0;
-	int j;
-	int k;
-	int l;
 	c->car_bar = true;
-
 	char pontos[20];
 	while(execut)
 	{
