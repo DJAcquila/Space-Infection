@@ -1,5 +1,6 @@
 #ifndef COLLISIONS_H
 #define COLLISIONS_H
+
 #include "defs.h"
 #include "set.h"
 

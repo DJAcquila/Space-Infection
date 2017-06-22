@@ -1,4 +1,4 @@
-OUT = main
+OUT = SpaceInfection
 CXX = gcc
 FLAGS = -lSDLmain -lSDL -lGL -lSDL_image -lSDL_ttf -lSDL_mixer -lSDL_image -lGLU -lGL -lglut -lm
 

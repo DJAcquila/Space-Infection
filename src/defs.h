@@ -164,5 +164,5 @@ typedef struct enemy2 Enemy2;
 
 SDL_Surface* screen;
 SDL_Surface* screen_menu;
-
+static int MAX_STARS = 200;
 #endif //INCLUDES_H
