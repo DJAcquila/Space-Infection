@@ -11,6 +11,15 @@ int MAX_BARREIRAS = 3;
 int MAX_ENEMY2 = 40; 
 
 typedef struct game Game ;
+/*
+||==============================================================================================||
+||				Acquila Santos Rocha - Instituto de Informática UFG								||
+||																								||
+||	Este arquivo impelementa as funções relativas as colisões									||
+||		1. Limites da bala posições de inicio, alocação da memória...							||
+||																								||
+||==============================================================================================||
+*/
 
 void preSets(Barreira* b, int qtd_barreiras, Bullet* bul, Inimigos* ini, Recharge* rer, Car* c, Enemy2* enem)
 {
@@ -340,4 +349,13 @@ void alocarMemoria(Car** c, Bullet** bul, Barreira** b, Recharge** rer, Enemy2**
 		exit(1);
 	}
 
+}
+void freeAll(Car** c, Bullet** bul, Barreira** b, Recharge** rer, Enemy2** enem, Inimigos** ini)
+{
+	free(*b);
+	free(*c);
+	free(*ini);
+	free(*bul);
+	free(*enem);
+	free(*rer);
 }

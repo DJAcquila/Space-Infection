@@ -1,5 +1,18 @@
 #include "collisions.h"
 
+/*
+||==============================================================================================||
+||				Acquila Santos Rocha - Instituto de Informática UFG								||
+||																								||
+||	Este arquivo impelementa as funções relativas as colisões									||
+||		1. Colisão Recargas(Barreiras, Balas)													||
+||		2. Colisão entre dois inimigos															||	
+||		3. Colisão da nave com/sem a barreira													||
+||		4. Colisao do inimigo com o carro														||
+||		5. Colisão do carro e do inimigo com os limites da tela									||	
+||		6. Movimentos do inimigo																||
+||==============================================================================================||
+*/
 bool colisionBarreiraCar(Inimigos* iniA, Car* iniB)
 {
 	if(!(iniA->inimigoY + iniA->inimigoCA < iniB->carY))

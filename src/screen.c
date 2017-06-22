@@ -1,14 +1,14 @@
 #include "screen.h"
 
 /*
-|===============================================================================================|
-|				Acquila Santos Rocha - Instituto de Informática UFG								|
-|																								|		
-|	Esta função configura as necessidades gráficas do jogo:										|
-|		1. Inicia a tela.																		|
-|		2. Cria a função que recebe a textura (imagem)											|
-|		3. 																						|
-|===============================================================================================|
+||==============================================================================================||
+||				Acquila Santos Rocha - Instituto de Informática UFG								||
+||																								||
+||	Este arquivo implementa as necessidades gráficas do jogo:									||
+||		1. Inicia a tela.																		||
+||		2. Cria a função que recebe a textura (imagem)											||
+||		3. Funçao para transformar string em imagem												||
+||==============================================================================================||
 */
 
 /*Esta função é responsável por renderizar uma string em forma de textura, para mostrar na tela */
@@ -32,7 +32,7 @@ void renderBitmapString (float x, float y, char *string)
 	glEnable(GL_TEXTURE);//Habilita textura
 }
 
-/*Talvez esta função seja a mais usada no programa, ela é a responsável por identificar a imagem e criar a textura para ela*/
+/*Talvez esta função seja a mais usada no programa, ela é a responsável por identificar a imagem e "criar" a textura para ela*/
 /*GLuint: um unsigned binary int*/
 GLuint createTexture(const char nome[])
 {  
@@ -47,8 +47,8 @@ GLuint createTexture(const char nome[])
 
 	GLuint id = 0;//Ende
 
-	glGenTextures(1, &id);
-	glBindTexture(GL_TEXTURE_2D, id);
+	glGenTextures(1, &id);//Esta função "cria"" a textura
+	glBindTexture(GL_TEXTURE_2D, id);//Determina que a textura usada eh em uma figura 2d
 
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -63,20 +63,22 @@ GLuint createTexture(const char nome[])
 	
 	return id;
 }
+/*Esta função coloca a textura criada em uma primitiva (Neste caso é um retangulo)*/
 void ObjectTexture(float X, float Y, float Comp, float Alt, unsigned int texture)
 {
-	glColor4ub(255, 255, 255, 255);
+	glColor4ub(255, 255, 255, 255);//Para identificar o canal alpha a cor terá de ser branca
 			glEnable(GL_TEXTURE_2D);
 			glBindTexture(GL_TEXTURE_2D, texture );
 			
 			glBegin(GL_QUADS);
-		
+				/*Agora determina as coordenadas da textura baseadas na posição e nas dimensões do retangulo*/
 				glTexCoord2d(0,0);	glVertex2f(X, Y);
 				glTexCoord2d(1,0);	glVertex2f(X + Comp, Y);
 				glTexCoord2d(1,1);	glVertex2f(X + Comp, Y + Alt);
 				glTexCoord2d(0,1);	glVertex2f(X, Y + Alt);	
 	glEnd();
 }
+/*Função responsável por iniciar a janela*/
 void initScreen(int argc, char *args[])
 {
 	
@@ -100,22 +102,22 @@ void initScreen(int argc, char *args[])
 
 	Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 1024);
 	
-	//Cor inicial de janela
+	/*A cor inicial da janela era preto*/
 	glClearColor(0,0,0,0.0);
 
-	//Area exibida pela janela
+	/*Define as dimensões da janela*/
 	glViewport(0,0,TamJanela_x,TamJanela_y);
+	/**/
 	glShadeModel(GL_SMOOTH);
 	
-	//2d
+	/*Libera uma projeção 2D*/
 	glMatrixMode(GL_PROJECTION);
-	
-	glLoadIdentity();//Para mexer com imagens geometricas
+	/*Para mexer com figuras geométricas*/
+	glLoadIdentity();
 
-	//3d
+	/*Desabilitada a profundidade (Já que nao vou mexer com figuras tri-dimensionais)*/
 	glDisable(GL_DEPTH_TEST);
 
-	//uso da imagem 
 	glEnable(GL_BLEND);
 	glEnable(GL_POINT_SMOOTH);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

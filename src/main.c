@@ -1,4 +1,4 @@
-//gcc -o main main.c -lSDLmain -lSDL -lGL -lSDL_ttf -lSDL_mixer -lSDL_image -lGLU -lGL -lglut -lm
+
 #include "menu.h"
 #include "screen.h"
 #include "collisions.h"
@@ -42,11 +42,11 @@ int main(int argc, char *args[])
 	
 	char conteudo[N];
 	
-	ranking = fopen("ranking.txt","a+");
+	ranking = fopen("ranking.txt","ab+");
 	
 	if(ranking == NULL)
 	{
-		ranking = fopen("file.txt","a");
+		ranking = fopen("file.txt","ab");
 		fputs("NOME",ranking);
 		fputs("\t",ranking);
 		fputs("PONTOS",ranking);
@@ -244,7 +244,21 @@ int main(int argc, char *args[])
 							}
 							else if(ColisionCarEnemy2(enem + k, c) || LimiteEnemy2(enem + k))
 							{
-								execut = false;
+								freeAll(&c, &bul, &b, &rer, &enem, &ini);
+								glPopMatrix();
+								SDL_GL_SwapBuffers();
+								
+								r_menu = main_menu();
+								if(r_menu == 1)
+								{
+									execut = false;
+								}
+								else if(r_menu == 0)
+								{
+									alocarMemoria(&c, &bul, &b, &rer, &enem, &ini);
+									preSets(b, num_barreiras, bul, ini, rer, c, enem);
+									execut = true;
+								}
 							}
 						}
 					}
@@ -259,7 +273,34 @@ int main(int argc, char *args[])
 			{
 				if(!(c->car_bar)) //se nao esta com a barreira
 				{
-					execut = false;
+					freeAll(&c, &bul, &b, &rer, &enem, &ini);
+					glPopMatrix();
+					SDL_GL_SwapBuffers();
+					r_menu = main_menu();
+					if(r_menu == 1)
+					{
+						execut = false;
+					}
+					else if(r_menu == 0)
+					{
+						alocarMemoria(&c, &bul, &b, &rer, &enem, &ini);
+						preSets(b, num_barreiras, bul, ini, rer, c, enem);
+						esq = false, dir = false;
+						baixo = false, cima = false;
+
+						contador = 0;
+						dead_enemies = 0;
+						points = 0;
+						contador_balas = 0;
+						num_balas = 0;
+						contador_recargas = 0;
+						contador_inimigos2 = 0;
+						dead_enemies2 = 0;
+						marcador = 1;
+						num_barreiras = 0;
+						execut = true;
+					}
+					
 				}
 				else // caso estiver com a barreira...
 				{
@@ -295,7 +336,21 @@ int main(int argc, char *args[])
 		}
 		if(dead_enemies2 == MAX_ENEMY2)
 		{
-			execut = false;
+			freeAll(&c, &bul, &b, &rer, &enem, &ini);
+			glPopMatrix();
+			SDL_GL_SwapBuffers();
+			
+			r_menu = main_menu();
+			if(r_menu == 1)
+			{
+				execut = false;
+			}
+			else if(r_menu == 0)
+			{
+				alocarMemoria(&c, &bul, &b, &rer, &enem, &ini);
+				preSets(b, num_barreiras, bul, ini, rer, c, enem);
+				execut = true;
+			}
 		}
 
 
