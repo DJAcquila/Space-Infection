@@ -97,7 +97,7 @@ int main(int argc, char *args[])
 	bool esq = false, dir = false;
 	bool baixo = false, cima = false;
 
-	//Teturas
+	//Testuras
 	unsigned int enemy_texture = 0;
 	enemy_texture = createTexture("Textures/virus.png");
 	unsigned int car_texture = 0;
@@ -244,7 +244,6 @@ int main(int argc, char *args[])
 							}
 							else if(ColisionCarEnemy2(enem + k, c) || LimiteEnemy2(enem + k))
 							{
-								freeAll(&c, &bul, &b, &rer, &enem, &ini);
 								glPopMatrix();
 								SDL_GL_SwapBuffers();
 								
@@ -273,9 +272,10 @@ int main(int argc, char *args[])
 			{
 				if(!(c->car_bar)) //se nao esta com a barreira
 				{
-					freeAll(&c, &bul, &b, &rer, &enem, &ini);
+					
 					glPopMatrix();
 					SDL_GL_SwapBuffers();
+					
 					r_menu = main_menu();
 					if(r_menu == 1)
 					{
@@ -285,8 +285,8 @@ int main(int argc, char *args[])
 					{
 						alocarMemoria(&c, &bul, &b, &rer, &enem, &ini);
 						preSets(b, num_barreiras, bul, ini, rer, c, enem);
-						esq = false, dir = false;
-						baixo = false, cima = false;
+						bool esq = false, dir = false;
+						bool baixo = false, cima = false;
 
 						contador = 0;
 						dead_enemies = 0;
@@ -336,7 +336,6 @@ int main(int argc, char *args[])
 		}
 		if(dead_enemies2 == MAX_ENEMY2)
 		{
-			freeAll(&c, &bul, &b, &rer, &enem, &ini);
 			glPopMatrix();
 			SDL_GL_SwapBuffers();
 			

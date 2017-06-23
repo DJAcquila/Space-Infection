@@ -21,6 +21,7 @@ void MorteBala(Bullet* bul, Inimigos* ini);
 bool LimiteEnemy2(Enemy2* enem);
 void keyEvents(int(*pause_menu)(void),bool* execut, bool* baixo, bool* cima, bool* dir,bool* esq, int num_barreiras, int num_balas, int contador_balas, int contador, Car* c, Barreira* b, Bullet* bul, Mix_Chunk *bar_sound, Mix_Chunk* bul_sound);
 void alocarMemoria(Car** c, Bullet** bul, Barreira** b, Recharge** rer, Enemy2** enem, Inimigos** ini);
+void setAll(bool esq, bool dir, bool cima, bool baixo);
 
 
 #endif

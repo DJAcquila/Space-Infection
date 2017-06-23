@@ -109,10 +109,10 @@ void preSets(Barreira* b, int qtd_barreiras, Bullet* bul, Inimigos* ini, Recharg
 			(enem + n)->vel = 4;
 		else
 			(enem + n)->vel = 5;
-	
 	}
 	
 }
+
 void bulletPosition (Bullet* bul, Car* c)
 {
 	
