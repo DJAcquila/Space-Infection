@@ -256,6 +256,19 @@ int main(int argc, char *args[])
 								{
 									alocarMemoria(&c, &bul, &b, &rer, &enem, &ini);
 									preSets(b, num_barreiras, bul, ini, rer, c, enem);
+									bool esq = false; dir = false;
+									bool baixo = false; cima = false;
+
+									contador = 0;
+									dead_enemies = 0;
+									points = 0;
+									contador_balas = 0;
+									num_balas = 0;
+									contador_recargas = 0;
+									contador_inimigos2 = 0;
+									dead_enemies2 = 0;
+									marcador = 1;
+									num_barreiras = 0;
 									execut = true;
 								}
 							}
@@ -285,8 +298,8 @@ int main(int argc, char *args[])
 					{
 						alocarMemoria(&c, &bul, &b, &rer, &enem, &ini);
 						preSets(b, num_barreiras, bul, ini, rer, c, enem);
-						bool esq = false, dir = false;
-						bool baixo = false, cima = false;
+						bool esq = false; dir = false;
+						bool baixo = false; cima = false;
 
 						contador = 0;
 						dead_enemies = 0;
@@ -348,6 +361,19 @@ int main(int argc, char *args[])
 			{
 				alocarMemoria(&c, &bul, &b, &rer, &enem, &ini);
 				preSets(b, num_barreiras, bul, ini, rer, c, enem);
+				bool esq = false; dir = false;
+				bool baixo = false; cima = false;
+
+				contador = 0;
+				dead_enemies = 0;
+				points = 0;
+				contador_balas = 0;
+				num_balas = 0;
+				contador_recargas = 0;
+				contador_inimigos2 = 0;
+				dead_enemies2 = 0;
+				marcador = 1;
+				num_barreiras = 0;
 				execut = true;
 			}
 		}
