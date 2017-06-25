@@ -30,6 +30,7 @@ bool EnemyColision(Inimigos* ini);
 bool MesmaDirecao(Inimigos* iniA, Inimigos* iniB);
 void EnemyMove (Inimigos* ini);
 void CarColision (Car* c, bool esq, bool dir, bool cima, bool baixo);
+bool ColisionEnemyCar (Inimigos* ini, Car* c);
 
 #endif 
 

@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <SDL/SDL_ttf.h>
 #include <SDL/SDL_mixer.h>
 #include "SDL/SDL_image.h"
 #include <sys/time.h>
@@ -165,5 +164,8 @@ typedef struct enemy2 Enemy2;
 SDL_Surface* screen;
 SDL_Surface* screen_menu;
 static int MAX_STARS = 200;
+double tmili;
+clock_t begin;
+clock_t end;
 
 #endif //INCLUDES_H

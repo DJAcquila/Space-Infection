@@ -31,7 +31,8 @@ int main(int argc, char *args[])
 	int j;
 	int k;
 	int l;
-	
+	clock_t begin;
+	clock_t end;
 
 	char nome[124];
 	static int N =  400;
@@ -62,10 +63,7 @@ int main(int argc, char *args[])
 
 	/*Aloca espaco de memoria para as structures*/
 	alocarMemoria(&c, &bul, &b, &rer, &enem, &ini);
-	
-	struct timeval inicio, final;
-	int tmili;
-   	gettimeofday(&inicio, NULL);
+   	
 
    	bar_sound = Mix_LoadWAV("Sound/PegarBarreira.ogg");
     bar_explosion = Mix_LoadWAV("Sound/barExplode.ogg");
@@ -86,6 +84,7 @@ int main(int argc, char *args[])
 	}
 	else if(r_menu == 0)
 	{
+		begin = clock();
 		execut = true;
 	}
 	
@@ -111,21 +110,17 @@ int main(int argc, char *args[])
 
 	unsigned int textureUp = 0;
 	textureUp = createTexture("Textures/Bullet/bulletUp.png");
-
+	
 	c->car_bar = true;
 	char pontos[20];
 	while(execut)
 	{
 		int n;
-
+		end = clock();
 		float color[] = { 1.0f, 0.0f, 0.0f, 1.0f };
 		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);
-		//Para contar o tempo decorrido
-
-		gettimeofday(&final, NULL);
-   		
-		tmili = (int) (1000 * (final.tv_sec - inicio.tv_sec) + (final.tv_usec - inicio.tv_usec) / 1000);
-
+		
+		tmili = (double)(end - begin) / CLOCKS_PER_SEC;
 		char MensagemPontos[20];
 
     	
@@ -139,7 +134,8 @@ int main(int argc, char *args[])
     	
 		char MensagemBalas[20];
     	sprintf(MensagemBalas,"Balas : %2d", num_balas);
-		
+		char MensagemTime[20];
+    	sprintf(MensagemTime,"Tempo : %.2lf", 10*tmili);
 		/*Captura de eventos do teclado*/
 		keyEvents(pause_menu, &execut, &baixo, &cima, &dir, &esq, num_barreiras, num_balas, contador_balas, contador, c, b, bul, bar_sound, bul_sound);
 		
@@ -152,6 +148,13 @@ int main(int argc, char *args[])
 			contador_balas++;
 			if(num_balas > 0)
 				num_balas--;
+		}
+		if((b + contador)->aparecer_barreira)
+		{
+			
+			contador++;
+			if(num_barreiras > 0)
+				num_barreiras--;
 		}
 
 		LimiteBala(bul+contador_balas);
@@ -254,6 +257,7 @@ int main(int argc, char *args[])
 								}
 								else if(r_menu == 0)
 								{
+									begin = clock();
 									alocarMemoria(&c, &bul, &b, &rer, &enem, &ini);
 									preSets(b, num_barreiras, bul, ini, rer, c, enem);
 									bool esq = false; dir = false;
@@ -296,6 +300,7 @@ int main(int argc, char *args[])
 					}
 					else if(r_menu == 0)
 					{
+						begin = clock();
 						alocarMemoria(&c, &bul, &b, &rer, &enem, &ini);
 						preSets(b, num_barreiras, bul, ini, rer, c, enem);
 						bool esq = false; dir = false;
@@ -336,7 +341,6 @@ int main(int argc, char *args[])
 		{
 			if(dead_enemies == cont) //FIM DO JOGO
 			{
-				Mix_PlayChannel(-1, alarme, 0);
 				marcador = 0;
 				num_balas += 350;
 				(enem)->vivo = true;
@@ -359,6 +363,7 @@ int main(int argc, char *args[])
 			}
 			else if(r_menu == 0)
 			{
+				begin = clock();
 				alocarMemoria(&c, &bul, &b, &rer, &enem, &ini);
 				preSets(b, num_barreiras, bul, ini, rer, c, enem);
 				bool esq = false; dir = false;
@@ -390,14 +395,14 @@ int main(int argc, char *args[])
 
 		renderBitmapString(1, 20, MensagemPontos);
 
-
+		renderBitmapString(1, 40, MensagemTime);
 
 
 		//So ira aparecer a barreira quando a barreira na estiver ativada na nave
 		switch (contador)
 		{
 			case 0:
-				if((tmili*0.001 >= 15 && tmili*0.001 <= 30))
+				if((tmili*10 >= 15 && tmili*10 <= 30))
 				{
 					(b+contador)->vivo = true;
 					if((b+contador)->vivo = true)
@@ -408,7 +413,7 @@ int main(int argc, char *args[])
 				break;
 
 			case 1:
-				if(tmili*0.001 >= 45 && tmili*0.001 <= 65)
+				if(tmili*10 >= 45 && tmili*10 <= 65)
 				{
 					(b+contador)->vivo = true;
 					if((b+contador)->vivo = true)
@@ -418,7 +423,7 @@ int main(int argc, char *args[])
 					(b+contador)->vivo = false;
 				break;
 			case 2:
-				if(tmili*0.001 >= 100 && tmili*0.001 <= 120)
+				if(tmili*10 >= 100 && tmili*10 <= 120)
 				{
 					(b+contador)->vivo = true;
 					if((b+contador)->vivo = true)
@@ -462,7 +467,7 @@ int main(int argc, char *args[])
 		switch (contador_recargas)
 		{
 			case 0:
-				if(tmili*0.001 > 10 && tmili*0.001 <= 20)
+				if(tmili*10 > 10 && tmili*10 <= 20)
 				{
 					(rer+contador_recargas)->vivo =  true;
 					if((rer+contador_recargas)->vivo)
@@ -473,7 +478,7 @@ int main(int argc, char *args[])
 				break;
 
 			case 1:
-				if(tmili*0.001 > 30 && tmili*0.001 <= 40)
+				if(tmili*10 > 30 && tmili*10 <= 40)
 				{
 					(rer+contador_recargas)->vivo =  true;
 					if((rer+contador_recargas)->vivo)
@@ -483,7 +488,7 @@ int main(int argc, char *args[])
 					(rer+contador_recargas)->vivo =  false;
 				break;
 			case 2:
-				if(tmili*0.001 > 40 && tmili*0.001 <= 50)
+				if(tmili*10 > 40 && tmili*10 <= 50)
 				{
 					(rer+contador_recargas)->vivo =  true;
 					if((rer+contador_recargas)->vivo)

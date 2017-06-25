@@ -60,10 +60,10 @@ void preSets(Barreira* b, int qtd_barreiras, Bullet* bul, Inimigos* ini, Recharg
 		}while(ColisionEnemyCar((ini+n),c) && EnemyColision(ini));
 
 		
-		(ini+n)->velx = 4;
+		(ini+n)->velx = 5;
 		
 		
-		(ini + n)->vely = (ini + n)->velx;
+		(ini + n)->vely = -(ini + n)->velx;
 		(ini + n)->inimigoX = x;
 		(ini + n)->inimigoY = y;
 		(ini + n)->inimigoCA = 30;
@@ -182,14 +182,15 @@ void keyEvents(int(*pause_menu)(void),bool* execut, bool* baixo, bool* cima, boo
 			if(event.type == SDL_KEYUP/*Tecal solta*/ && event.key.keysym.sym == SDLK_BACKSPACE)
 			{
 				/*Esta parte do programa realiza a troca de surfaces, do menu de pause e da tela do jogo*/
-	
+				/*Corrigir o tempo quando pausa*/
 				r_menu = pause_menu();
 				if(r_menu == 1)
 				{
 					*execut = false;
 				}
 				else if(r_menu == 0)
-				{
+				{	
+					begin = clock();				
 					*execut = true;
 				}
 			
@@ -219,8 +220,8 @@ void keyEvents(int(*pause_menu)(void),bool* execut, bool* baixo, bool* cima, boo
 					if(num_barreiras > 0)
 						if(!(c->car_bar))
 						{
+							(b + contador)->aparecer_barreira = true;
 							c->car_bar = true;
-							(b + contador)->vivo = false; //quando ativar a barreira no carro, a barreira para ser coletada ficara "morta"
 							Mix_PlayChannel(-1, bar_sound, 0);
 						}
 				}
@@ -263,7 +264,8 @@ void keyEvents(int(*pause_menu)(void),bool* execut, bool* baixo, bool* cima, boo
 				{
 					if(num_barreiras > 0)
 					{
-						num_barreiras--;
+						(b + contador)->aparecer_barreira = true;
+						
 						c->car_bar = true;
 
 					}

@@ -178,13 +178,13 @@ void EnemyMove (Inimigos* ini)
 					(ini+aux)->colisaoY = false;
 				}
 
-				/*else if((ini+aux)->colisaoX || (ini+aux)->colisaoY)
+				else if((ini+aux)->colisaoX || (ini+aux)->colisaoY)
 				{	
 					(ini+aux)->velx = -(ini+aux)->velx;
 					(ini+aux)->colisaoX = false;
 					(ini+aux)->vely = -(ini+aux)->vely;
 					(ini+aux)->colisaoY = false;
-				}*/
+				}
 			}
 		}
 	}	
