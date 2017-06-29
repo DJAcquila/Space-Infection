@@ -85,7 +85,7 @@ void initScreen(int argc, char *args[])
 	glutInit(&argc, args);
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-    //Restringir us da memoria
+    /*Restringir uso da memoria*/
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);

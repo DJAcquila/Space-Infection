@@ -160,7 +160,16 @@ struct enemy2
 	bool colisaoY;
 };
 typedef struct enemy2 Enemy2;
-
+struct user
+{
+	int points;
+	char nome[64];
+	char senha[64];
+};
+typedef struct user User;
+/*Variáveis globais*/
+FILE *ranking;
+User u;
 SDL_Surface* screen;
 SDL_Surface* screen_menu;
 static int MAX_STARS = 200;

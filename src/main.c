@@ -4,7 +4,7 @@
 #include "collisions.h"
 #include "set.h"
 #include "defs.h"
-
+#include "rank.h"
 Mix_Chunk *bar_sound;
 Mix_Chunk *bar_explosion;
 Mix_Chunk *bar_cat;
@@ -38,25 +38,10 @@ int main(int argc, char *args[])
 	static int N =  400;
 	printf("Informe seu nome: ");
 	scanf(" %[^\n]s", nome);
-
-	FILE *ranking;
 	
 	char conteudo[N];
 	
-	ranking = fopen("ranking.txt","ab+");
-	
-	if(ranking == NULL)
-	{
-		ranking = fopen("file.txt","ab");
-		fputs("NOME",ranking);
-		fputs("\t",ranking);
-		fputs("PONTOS",ranking);
-		fputs("\n",ranking);
-	}
-
-	fputs(nome,ranking);
-	fputs("\t",ranking);
-	fread(&conteudo, sizeof(char), N,ranking);
+	//abrir_arquivo();
 	initScreen(argc,args);
 
 	Recharge* rer; Bullet* bul; Inimigos* ini; Barreira* b; Car* c; Enemy2* enem;
@@ -262,7 +247,7 @@ int main(int argc, char *args[])
 									preSets(b, num_barreiras, bul, ini, rer, c, enem);
 									bool esq = false; dir = false;
 									bool baixo = false; cima = false;
-
+									c->car_bar = true;
 									contador = 0;
 									dead_enemies = 0;
 									points = 0;
@@ -305,7 +290,7 @@ int main(int argc, char *args[])
 						preSets(b, num_barreiras, bul, ini, rer, c, enem);
 						bool esq = false; dir = false;
 						bool baixo = false; cima = false;
-
+						c->car_bar = true;
 						contador = 0;
 						dead_enemies = 0;
 						points = 0;
@@ -368,7 +353,7 @@ int main(int argc, char *args[])
 				preSets(b, num_barreiras, bul, ini, rer, c, enem);
 				bool esq = false; dir = false;
 				bool baixo = false; cima = false;
-
+				c->car_bar = true;
 				contador = 0;
 				dead_enemies = 0;
 				points = 0;
@@ -402,7 +387,7 @@ int main(int argc, char *args[])
 		switch (contador)
 		{
 			case 0:
-				if((tmili*10 >= 15 && tmili*10 <= 30))
+				if((tmili*10 >= 10 && tmili*10 <= 20))
 				{
 					(b+contador)->vivo = true;
 					if((b+contador)->vivo = true)
@@ -413,7 +398,7 @@ int main(int argc, char *args[])
 				break;
 
 			case 1:
-				if(tmili*10 >= 45 && tmili*10 <= 65)
+				if(tmili*10 > 20 && tmili*10 <= 40)
 				{
 					(b+contador)->vivo = true;
 					if((b+contador)->vivo = true)
@@ -423,7 +408,7 @@ int main(int argc, char *args[])
 					(b+contador)->vivo = false;
 				break;
 			case 2:
-				if(tmili*10 >= 100 && tmili*10 <= 120)
+				if(tmili*10 >= 30 && tmili*10 <= 120)
 				{
 					(b+contador)->vivo = true;
 					if((b+contador)->vivo = true)
@@ -478,7 +463,7 @@ int main(int argc, char *args[])
 				break;
 
 			case 1:
-				if(tmili*10 > 30 && tmili*10 <= 40)
+				if(tmili*10 > 20 && tmili*10 <= 40)
 				{
 					(rer+contador_recargas)->vivo =  true;
 					if((rer+contador_recargas)->vivo)
@@ -488,7 +473,7 @@ int main(int argc, char *args[])
 					(rer+contador_recargas)->vivo =  false;
 				break;
 			case 2:
-				if(tmili*10 > 40 && tmili*10 <= 50)
+				if(tmili*10 > 30 && tmili*10 <= 50)
 				{
 					(rer+contador_recargas)->vivo =  true;
 					if((rer+contador_recargas)->vivo)
@@ -569,12 +554,7 @@ int main(int argc, char *args[])
 	Mix_FreeChunk(enemy2_explosion);
 	Mix_FreeChunk(bul_sound);
 
-	fputs(pontos,ranking);
-	fputs("\n",ranking);
 	
-	fread(&conteudo, sizeof(char), N,ranking);
-	printf("%s",conteudo);
-
 	//Sistema de Ranqueamento aqui
 	/*
 		*
