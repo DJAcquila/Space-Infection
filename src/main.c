@@ -4,7 +4,6 @@
 #include "collisions.h"
 #include "set.h"
 #include "defs.h"
-#include "rank.h"
 Mix_Chunk *bar_sound;
 Mix_Chunk *bar_explosion;
 Mix_Chunk *bar_cat;
